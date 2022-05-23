@@ -1,8 +1,53 @@
-import 'package:chatapp/pages/SignupPg.dart';
+import 'dart:developer';
+import 'package:chatapp/pages/lgoinPg.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
-class Login_Page extends StatelessWidget {
-  const Login_Page({Key? key}) : super(key: key);
+class SignUp_Page extends StatefulWidget {
+  const SignUp_Page({Key? key}) : super(key: key);
+
+  @override
+  State<SignUp_Page> createState() => _SignUp_PageState();
+}
+
+class _SignUp_PageState extends State<SignUp_Page> {
+  //
+  TextEditingController emailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController cPasswordController = TextEditingController();
+
+  void createAccount() async {
+    String email = emailController.text.trim();
+    String password = passwordController.text.trim();
+    String cPassword = cPasswordController.text.trim();
+
+    if (email == "" || password == "" || cPassword == "") {
+      const snackBar = SnackBar(
+        content: Text('Please fill all the details!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (password != cPassword) {
+      const snackBar = SnackBar(
+        content: Text('Passwords do not match!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      //Creating new account
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: email, password: password);
+        log("User Created");
+      } on FirebaseAuthException catch (ex) {
+        final String error = ex.code.toString();
+        log(ex.code.toString());
+        const snackBar = SnackBar(
+          content: Text("error, try changing email for password"),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(snackBar);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -10,7 +55,7 @@ class Login_Page extends StatelessWidget {
     return Container(
       height: size.height,
       width: size.width,
-      color: const Color.fromARGB(255, 155, 231, 157),
+      color: Color.fromARGB(255, 155, 231, 157),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
@@ -18,7 +63,7 @@ class Login_Page extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               SizedBox(height: size.height * 0.09),
-              Image.asset("assets/images/loginPg.png"),
+              Image.asset("assets/images/SignupPg.png"),
               SizedBox(height: size.height * 0.03),
               //
               //
@@ -43,7 +88,8 @@ class Login_Page extends StatelessWidget {
                     SizedBox(
                       height: 45,
                       width: 200,
-                      child: TextFormField(
+                      child: TextField(
+                        controller: emailController,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: "Email",
@@ -79,7 +125,8 @@ class Login_Page extends StatelessWidget {
                     SizedBox(
                       height: 45,
                       width: 200,
-                      child: TextFormField(
+                      child: TextField(
+                        controller: passwordController,
                         obscureText: true,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
@@ -91,45 +138,68 @@ class Login_Page extends StatelessWidget {
                 ),
               ),
               //
-              const SizedBox(
-                height: 10,
+              const SizedBox(height: 15),
+              //
+              Container(
+                height: 45,
+                width: 317,
+                decoration: const BoxDecoration(
+                  color: Color.fromARGB(255, 193, 251, 195),
+                  borderRadius: BorderRadius.all(Radius.circular(20)),
+                ),
+                child: Row(
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.all(7),
+                      height: 25,
+                      width: 40,
+                      decoration: const BoxDecoration(
+                          image: DecorationImage(
+                              image: AssetImage("assets/icons/password.png"),
+                              fit: BoxFit.contain)),
+                    ),
+                    SizedBox(
+                      height: 45,
+                      width: 200,
+                      child: TextField(
+                        controller: cPasswordController,
+                        obscureText: true,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: "Confirm Password",
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
               //
-              Row(
-                children: [
-                  const SizedBox(
-                    width: 25,
-                  ),
-                  InkWell(
-                    child: const Text("Forgot Password?"),
-                    onTap: () {
-                      //
-                    },
-                  ),
-                  const Spacer(),
-                  InkWell(
-                    child: const Text("Sign Up!"),
+              //
+
+              Align(
+                alignment: Alignment.bottomLeft,
+                child: Padding(
+                  padding:
+                      const EdgeInsets.only(top: 10.0, bottom: 10, left: 30),
+                  child: InkWell(
+                    child: const Text("Already have an account?"),
                     onTap: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const SignUp_Page()),
+                            builder: (context) => const Login_Page()),
                       );
                     },
                   ),
-                  const SizedBox(
-                    width: 25,
-                  ),
-                ],
+                ),
               ),
+
               //
-              const SizedBox(
-                height: 10,
-              ),
+
               //
               InkWell(
                 onTap: () {
-                  //
+                  createAccount();
                 },
                 child: Container(
                   height: 45,
@@ -151,7 +221,7 @@ class Login_Page extends StatelessWidget {
                             Color.fromARGB(255, 0, 255, 123),
                           ])),
                   alignment: Alignment.center,
-                  child: Text("Log in",
+                  child: Text("Sign Up",
                       style: TextStyle(
                           fontSize: 20, color: Colors.black.withOpacity(0.75))),
                 ),
