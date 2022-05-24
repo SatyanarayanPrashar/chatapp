@@ -1,3 +1,4 @@
+import 'package:chatapp/pages/CompleteProfile.dart';
 import 'package:chatapp/pages/HomePage.dart';
 import 'package:chatapp/pages/lgoinPg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -16,13 +17,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        primarySwatch: Colors.lightGreen,
-      ),
-      home: (FirebaseAuth.instance.currentUser != null)
-          ? Login_Page()
-          : Login_Page(),
-    );
+        debugShowCheckedModeBanner: false,
+        theme: ThemeData(
+          primarySwatch: Colors.lightGreen,
+        ),
+        home: (FirebaseAuth.instance.currentUser != null)
+            ? Login_Page()
+            : Login_Page());
   }
 }

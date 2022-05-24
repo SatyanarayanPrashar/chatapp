@@ -185,11 +185,7 @@ class _SignUp_PageState extends State<SignUp_Page> {
                   child: InkWell(
                     child: const Text("Already have an account?"),
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const Login_Page()),
-                      );
+                      Navigator.pop(context);
                     },
                   ),
                 ),
