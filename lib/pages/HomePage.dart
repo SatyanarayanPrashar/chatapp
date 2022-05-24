@@ -1,4 +1,4 @@
-import 'package:chatapp/pages/lgoinPg.dart';
+import 'package:chatapp/pages/loginPg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,9 @@
 import 'dart:developer';
+
+import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/pages/HomePage.dart';
 import 'package:chatapp/pages/SignupPg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +21,7 @@ class _Login_PageState extends State<Login_Page> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void login() async {
+  void checkValues() {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
@@ -28,23 +31,34 @@ class _Login_PageState extends State<Login_Page> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .signInWithEmailAndPassword(email: email, password: password);
-        if (userCredential.user != null) {
-          //
-          Navigator.popUntil(context, (route) => route.isFirst);
-          //
-          Navigator.pushReplacement(
-              context, CupertinoPageRoute(builder: (context) => HomePage()));
-        }
-      } on FirebaseAuthException catch (ex) {
-        log(ex.code.toString());
-        const snackBar = SnackBar(
-          content: Text("Wrong! Password or email!"),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
+      logIn(email, password);
+    }
+  }
+
+  void logIn(String email, String password) async {
+    UserCredential? credential;
+
+    try {
+      credential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (ex) {
+      log(ex.code.toString());
+      const snackBar = SnackBar(
+        content: Text("Please check your email or password!"),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+    if (credential != null) {
+      String uid = credential.user!.uid;
+
+      DocumentSnapshot userData =
+          await FirebaseFirestore.instance.collection('users').doc(uid).get();
+      UserModel userModel =
+          UserModel.fromMap(userData.data() as Map<String, dynamic>);
+      //
+      // Go to HomePaage
+      print("Log In successful!");
     }
   }
 
@@ -176,7 +190,7 @@ class _Login_PageState extends State<Login_Page> {
               //
               InkWell(
                 onTap: () {
-                  login();
+                  checkValues();
                 },
                 child: Container(
                   height: 45,

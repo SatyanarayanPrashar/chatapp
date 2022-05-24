@@ -1,8 +1,11 @@
 import 'dart:developer';
-import 'package:chatapp/pages/lgoinPg.dart';
+
+import 'package:chatapp/models/UserModel.dart';
+import 'package:chatapp/pages/loginPg.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class SignUp_Page extends StatefulWidget {
   const SignUp_Page({Key? key}) : super(key: key);
@@ -33,20 +36,37 @@ class _SignUp_PageState extends State<SignUp_Page> {
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
-      //Creating new account
-      try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: email, password: password);
-        if (userCredential.user != null) {
-          Navigator.pop(context);
-        }
-      } on FirebaseAuthException catch (ex) {
-        log(ex.code.toString());
-        const snackBar = SnackBar(
-          content: Text("error, try changing email or password"),
-        );
-        ScaffoldMessenger.of(context).showSnackBar(snackBar);
-      }
+      signUp(email, password);
+    }
+  }
+
+  void signUp(String email, String password) async {
+    UserCredential? credential;
+
+    try {
+      credential = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(email: email, password: password);
+    } on FirebaseAuthException catch (ex) {
+      log(ex.code.toString());
+      const snackBar = SnackBar(
+        content: Text("error, try changing email or password"),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
+
+    if (credential != null) {
+      String uid = credential.user!.uid;
+
+      UserModel newUser =
+          UserModel(uid: uid, email: email, fullname: "", profilepic: "");
+
+      await FirebaseFirestore.instance
+          .collection("users")
+          .doc(uid)
+          .set(newUser.toMap())
+          .then((value) {
+        print("New User Created");
+      });
     }
   }
 

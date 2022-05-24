@@ -1,6 +1,6 @@
 import 'package:chatapp/pages/CompleteProfile.dart';
 import 'package:chatapp/pages/HomePage.dart';
-import 'package:chatapp/pages/lgoinPg.dart';
+import 'package:chatapp/pages/loginPg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -21,8 +21,9 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.lightGreen,
         ),
-        home: (FirebaseAuth.instance.currentUser != null)
-            ? Login_Page()
-            : Login_Page());
+        // home: (FirebaseAuth.instance.currentUser != null)
+        //     ? Login_Page()
+        //     : Login_Page());
+        home: Cprofile_Page());
   }
 }
