@@ -94,7 +94,6 @@ class Cprofile_PageState extends State<Cprofile_Page> {
                       ),
                     ),
                     const SizedBox(height: 5.0),
-
 //
 //
                     InkWell(
