@@ -37,12 +37,13 @@ class _SignUp_PageState extends State<SignUp_Page> {
       try {
         UserCredential userCredential = await FirebaseAuth.instance
             .createUserWithEmailAndPassword(email: email, password: password);
-        log("User Created");
+        if (userCredential.user != null) {
+          Navigator.pop(context);
+        }
       } on FirebaseAuthException catch (ex) {
-        final String error = ex.code.toString();
         log(ex.code.toString());
         const snackBar = SnackBar(
-          content: Text("error, try changing email for password"),
+          content: Text("error, try changing email or password"),
         );
         ScaffoldMessenger.of(context).showSnackBar(snackBar);
       }
@@ -55,7 +56,7 @@ class _SignUp_PageState extends State<SignUp_Page> {
     return Container(
       height: size.height,
       width: size.width,
-      color: Color.fromARGB(255, 155, 231, 157),
+      color: const Color.fromARGB(255, 155, 231, 157),
       child: Scaffold(
         backgroundColor: Colors.transparent,
         body: SingleChildScrollView(
