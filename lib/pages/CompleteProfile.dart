@@ -1,18 +1,123 @@
 import 'dart:developer';
+import 'dart:io';
+import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/pages/HomePage.dart';
 import 'package:chatapp/pages/SignupPg.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_cropper/image_cropper.dart';
+import 'package:image_picker/image_picker.dart';
 
 class Cprofile_Page extends StatefulWidget {
-  const Cprofile_Page({Key? key}) : super(key: key);
+  final UserModel userModel;
+  final User firebaseUser;
+
+  const Cprofile_Page(
+      {Key? key, required this.userModel, required this.firebaseUser})
+      : super(key: key);
 
   @override
   State<Cprofile_Page> createState() => Cprofile_PageState();
 }
 
 class Cprofile_PageState extends State<Cprofile_Page> {
+//
+  File? imageFile;
+  TextEditingController fullNameController = TextEditingController();
+
+  void selectImage(ImageSource source) async {
+    XFile? pickedFile = await ImagePicker().pickImage(source: source);
+
+    // if (pickedFile != null) {
+    //   cropImage(pickedFile);
+    // }
+  }
+
+  // void cropImage(XFile file) async {
+  //   File? croppedImage = await ImageCropper.cropImage(
+  //       sourcePath: file.path,
+  //       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+  //       compressQuality: 20
+  //   );
+
+    // if (croppedImage != null) {
+    //   setState(() {
+    //     imageFile = croppedImage;
+    //   });
+    // }
+  }
+
+//
+  void showPhotoOptions() {
+    showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text("Upload Profile Picture"),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+                    selectImage(ImageSource.gallery);
+                  },
+                  leading: Icon(Icons.photo_album),
+                  title: Text("Select from Gallery"),
+                ),
+                ListTile(
+                  onTap: () {
+                    Navigator.pop(context);
+                    selectImage(ImageSource.camera);
+                  },
+                  leading: Icon(Icons.camera_alt),
+                  title: Text("Take a photo"),
+                )
+              ],
+            ),
+          );
+        });
+  }
+
+  void checkValues() {
+    String fullname = fullNameController.text.trim();
+
+    if (fullname == "" || imageFile == null) {
+      const snackBar = SnackBar(
+        content: Text("Please fill all the data!"),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else {
+      uploadData();
+    }
+  }
+
+  void uploadData() async {
+    UploadTask uploadTask = FirebaseStorage.instance
+        .ref("profilepictures")
+        .child(widget.userModel.uid.toString())
+        .putFile(imageFile!);
+
+    TaskSnapshot snapshot = await uploadTask;
+
+    String? imageUrl = await snapshot.ref.getDownloadURL();
+    String? fullname = fullNameController.text.trim();
+
+    widget.userModel.fullname = fullname;
+    widget.userModel.profilepic = imageUrl;
+
+    await FirebaseFirestore.instance
+        .collection("users")
+        .doc(widget.userModel.uid)
+        .set(widget.userModel.toMap())
+        .then((value) {
+      print("Data uploaded!");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -55,21 +160,25 @@ class Cprofile_PageState extends State<Cprofile_Page> {
 
                     CupertinoButton(
                       onPressed: () {
-                        //
+                        showPhotoOptions();
                       },
-                      child: const CircleAvatar(
+                      child: CircleAvatar(
                         radius: 60,
-                        child: Icon(
-                          Icons.person,
-                          size: 60,
-                        ),
+                        backgroundImage:
+                            (imageFile != null) ? FileImage(imageFile!) : null,
+                        child: (imageFile == null)
+                            ? const Icon(
+                                Icons.person,
+                                size: 60,
+                              )
+                            : null,
                       ),
                     ),
                     const SizedBox(height: 10.0),
 //
 //
                     Container(
-                      margin: EdgeInsets.all(10),
+                      margin: const EdgeInsets.all(10),
                       height: 45,
                       width: 317,
                       decoration: const BoxDecoration(
@@ -83,7 +192,7 @@ class Cprofile_PageState extends State<Cprofile_Page> {
                             height: 45,
                             width: 200,
                             child: TextFormField(
-                              obscureText: true,
+                              controller: fullNameController,
                               decoration: const InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Userame",
@@ -98,7 +207,7 @@ class Cprofile_PageState extends State<Cprofile_Page> {
 //
                     InkWell(
                       onTap: () {
-                        //
+                        checkValues();
                       },
                       child: Container(
                         height: 45,
