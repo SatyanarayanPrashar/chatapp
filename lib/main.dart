@@ -24,6 +24,6 @@ class MyApp extends StatelessWidget {
         // home: (FirebaseAuth.instance.currentUser != null)
         //     ? Login_Page()
         //     : Login_Page());
-        home: Cprofile_Page());
+        home: Login_Page());
   }
 }
