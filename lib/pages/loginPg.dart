@@ -59,6 +59,14 @@ class _Login_PageState extends State<Login_Page> {
       //
       // Go to HomePaage
       print("Log In successful!");
+      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return HomePage(
+              userModel: userModel, firebaseUser: credential!.user!);
+        }),
+      );
     }
   }
 

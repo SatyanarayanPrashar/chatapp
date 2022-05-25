@@ -1,10 +1,16 @@
+import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/pages/loginPg.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final UserModel userModel;
+  final User firebaseUser;
+
+  const HomePage(
+      {Key? key, required this.userModel, required this.firebaseUser})
+      : super(key: key);
 
   @override
   State<HomePage> createState() => _HomePageState();

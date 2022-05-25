@@ -31,23 +31,22 @@ class Cprofile_PageState extends State<Cprofile_Page> {
   void selectImage(ImageSource source) async {
     XFile? pickedFile = await ImagePicker().pickImage(source: source);
 
-    // if (pickedFile != null) {
-    //   cropImage(pickedFile);
-    // }
+    if (pickedFile != null) {
+      cropImage(pickedFile);
+    }
   }
 
-  // void cropImage(XFile file) async {
-  //   File? croppedImage = await ImageCropper.cropImage(
-  //       sourcePath: file.path,
-  //       aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
-  //       compressQuality: 20
-  //   );
+  void cropImage(XFile file) async {
+    CroppedFile? croppedImage = await ImageCropper().cropImage(
+        sourcePath: file.path,
+        aspectRatio: const CropAspectRatio(ratioX: 1, ratioY: 1),
+        compressQuality: 20);
 
-    // if (croppedImage != null) {
-    //   setState(() {
-    //     imageFile = croppedImage;
-    //   });
-    // }
+    if (croppedImage != null) {
+      setState(() {
+        imageFile = File(croppedImage.path);
+      });
+    }
   }
 
 //
@@ -56,7 +55,7 @@ class Cprofile_PageState extends State<Cprofile_Page> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text("Upload Profile Picture"),
+            title: const Text("Upload Profile Picture"),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
@@ -65,16 +64,16 @@ class Cprofile_PageState extends State<Cprofile_Page> {
                     Navigator.pop(context);
                     selectImage(ImageSource.gallery);
                   },
-                  leading: Icon(Icons.photo_album),
-                  title: Text("Select from Gallery"),
+                  leading: const Icon(Icons.photo_album),
+                  title: const Text("Select from Gallery"),
                 ),
                 ListTile(
                   onTap: () {
                     Navigator.pop(context);
                     selectImage(ImageSource.camera);
                   },
-                  leading: Icon(Icons.camera_alt),
-                  title: Text("Take a photo"),
+                  leading: const Icon(Icons.camera_alt),
+                  title: const Text("Take a photo"),
                 )
               ],
             ),
@@ -85,9 +84,14 @@ class Cprofile_PageState extends State<Cprofile_Page> {
   void checkValues() {
     String fullname = fullNameController.text.trim();
 
-    if (fullname == "" || imageFile == null) {
+    if (fullname == "") {
       const snackBar = SnackBar(
-        content: Text("Please fill all the data!"),
+        content: Text("Please fill a Username!"),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (imageFile == null) {
+      const snackBar = SnackBar(
+        content: Text("Please choose a profile picture!"),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
@@ -115,6 +119,14 @@ class Cprofile_PageState extends State<Cprofile_Page> {
         .set(widget.userModel.toMap())
         .then((value) {
       print("Data uploaded!");
+      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) {
+          return HomePage(
+              userModel: widget.userModel, firebaseUser: widget.firebaseUser);
+        }),
+      );
     });
   }
 
