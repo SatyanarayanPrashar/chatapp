@@ -55,8 +55,12 @@ class _Search_PageState extends State<Search_Page> {
           .doc(newChatroom.chatroomid)
           .set(newChatroom.toMap());
 
+      chatRoom = newChatroom;
+
       log("New Chatroom createdd");
     }
+
+    return chatRoom;
   }
 
   @override
@@ -148,16 +152,18 @@ class _Search_PageState extends State<Search_Page> {
                           onTap: () async {
                             ChatRoomModel? chatroomModel =
                                 await getChatroomModel(searchedUser);
-                            // Navigator.pop(context);
-                            // Navigator.push(context,
-                            //     MaterialPageRoute(builder: ((context) {
-                            //   return ChatRoomPage(
-                            //     chatroom: ,
-                            //     firebaseUser: widget.firebaseUser,
-                            //     targetUser: searchedUser,
-                            //     userModel: widget.userModel
-                            //   );
-                            // })));
+
+                            if (chatroomModel != null) {
+                              Navigator.pop(context);
+                              Navigator.push(context,
+                                  MaterialPageRoute(builder: ((context) {
+                                return ChatRoomPage(
+                                    chatroom: chatroomModel,
+                                    firebaseUser: widget.firebaseUser,
+                                    targetUser: searchedUser,
+                                    userModel: widget.userModel);
+                              })));
+                            }
                           },
                           leading: CircleAvatar(
                             radius: 30,

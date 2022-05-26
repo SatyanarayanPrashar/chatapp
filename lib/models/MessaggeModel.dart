@@ -13,7 +13,7 @@ class MessageModel {
     sender = map["sender"];
     text = map["text"];
     seen = map["seen"];
-    createdon = map["createdon"];
+    createdon = map["createdon"].toDate();
   }
 
   Map<String, dynamic> toMap() {
