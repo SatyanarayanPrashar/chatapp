@@ -25,9 +25,14 @@ class _Login_PageState extends State<Login_Page> {
     String email = emailController.text.trim();
     String password = passwordController.text.trim();
 
-    if (email == "" || password == "") {
+    if (email == "") {
       const snackBar = SnackBar(
-        content: Text('Please fill all the details!'),
+        content: Text('Please give an email adress!'),
+      );
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } else if (password == "") {
+      const snackBar = SnackBar(
+        content: Text('Please set a password!'),
       );
       ScaffoldMessenger.of(context).showSnackBar(snackBar);
     } else {
@@ -59,6 +64,10 @@ class _Login_PageState extends State<Login_Page> {
       //
       // Go to HomePaage
       print("Log In successful!");
+      Navigator.popUntil(context, (route) => route.isFirst);
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
+        return HomePage(userModel: userModel, firebaseUser: credential!.user!);
+      }));
     }
   }
 
@@ -173,8 +182,7 @@ class _Login_PageState extends State<Login_Page> {
                     onTap: () {
                       Navigator.push(
                         context,
-                        MaterialPageRoute(
-                            builder: (context) => const SignUp_Page()),
+                        MaterialPageRoute(builder: (context) => SignUp_Page()),
                       );
                     },
                   ),

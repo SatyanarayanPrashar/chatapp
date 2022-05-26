@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'CompleteProfile.dart';
+
 class SignUp_Page extends StatefulWidget {
   const SignUp_Page({Key? key}) : super(key: key);
 
@@ -66,6 +68,10 @@ class _SignUp_PageState extends State<SignUp_Page> {
           .set(newUser.toMap())
           .then((value) {
         print("New User Created");
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return Cprofile_Page(
+              userModel: newUser, firebaseUser: credential!.user!);
+        }));
       });
     }
   }
