@@ -10,7 +10,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
 import 'Profile_Page.dart';
 
 class HomePage extends StatefulWidget {
@@ -161,9 +160,7 @@ class _HomePageState extends State<HomePage> {
                     child: Text(snapshot.error.toString()),
                   );
                 } else {
-                  return Center(
-                    child: Text("No Chats"),
-                  );
+                  return NoChats_HomePg();
                 }
               } else {
                 return Center(

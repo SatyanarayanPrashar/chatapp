@@ -5,13 +5,19 @@ class NoChats_HomePg extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Image(
-          image: AssetImage("assets/images/makenewfriends.png"),
-        ),
-        Text("Make New Friends, search them by their email address")
-      ],
+    Size size = MediaQuery.of(context).size;
+    return Container(
+      height: size.height * 0.3,
+      width: size.width * 0.8,
+      child: Column(
+        children: [
+          Image(
+            image: AssetImage("assets/images/makenewfriends.png"),
+          ),
+          Text("Make New Friends"),
+          Text("search them by their email address")
+        ],
+      ),
     );
   }
 }

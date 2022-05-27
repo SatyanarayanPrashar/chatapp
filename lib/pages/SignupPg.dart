@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chatapp/models/UIHelper.dart';
 import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/pages/loginPg.dart';
 import 'package:flutter/cupertino.dart';
@@ -45,10 +46,14 @@ class _SignUp_PageState extends State<SignUp_Page> {
   void signUp(String email, String password) async {
     UserCredential? credential;
 
+    UIHelper.showLoadingDialog(context, "Setting things up..");
+
     try {
       credential = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (ex) {
+      Navigator.pop(context);
+
       log(ex.code.toString());
       const snackBar = SnackBar(
         content: Text("error, try changing email or password"),
@@ -68,6 +73,7 @@ class _SignUp_PageState extends State<SignUp_Page> {
           .set(newUser.toMap())
           .then((value) {
         print("New User Created");
+        Navigator.popUntil(context, (route) => route.isFirst);
         Navigator.push(context, MaterialPageRoute(builder: (context) {
           return Cprofile_Page(
               userModel: newUser, firebaseUser: credential!.user!);

@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chatapp/models/UIHelper.dart';
 import 'package:chatapp/pages/loginPg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -92,6 +93,8 @@ class _Profile_PageState extends State<Profile_Page> {
   }
 
   void uploadData() async {
+    UIHelper.showLoadingDialog(context, "You are loaking good!");
+
     UploadTask uploadTask = FirebaseStorage.instance
         .ref("profilepictures")
         .child(widget.userModel.uid.toString())

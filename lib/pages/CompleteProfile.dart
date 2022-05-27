@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:chatapp/models/UIHelper.dart';
 import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/pages/HomePage.dart';
 
@@ -99,6 +100,8 @@ class Cprofile_PageState extends State<Cprofile_Page> {
   }
 
   void uploadData() async {
+    UIHelper.showLoadingDialog(context, "Almost there");
+
     UploadTask uploadTask = FirebaseStorage.instance
         .ref("profilepictures")
         .child(widget.userModel.uid.toString())

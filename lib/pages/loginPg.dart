@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:chatapp/models/UIHelper.dart';
 import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/pages/HomePage.dart';
 import 'package:chatapp/pages/SignupPg.dart';
@@ -43,10 +44,13 @@ class _Login_PageState extends State<Login_Page> {
   void logIn(String email, String password) async {
     UserCredential? credential;
 
+    UIHelper.showLoadingDialog(context, "Logging In..");
+
     try {
       credential = await FirebaseAuth.instance
           .signInWithEmailAndPassword(email: email, password: password);
     } on FirebaseAuthException catch (ex) {
+      Navigator.pop(context);
       log(ex.code.toString());
       const snackBar = SnackBar(
         content: Text("Please check your email or password!"),
