@@ -6,6 +6,8 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
+import 'Profile_Page.dart';
+
 class HomePage extends StatefulWidget {
   final UserModel userModel;
   final User firebaseUser;
@@ -39,7 +41,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             //
             Container(
-              height: 104,
+              height: 77,
               width: size.width,
               decoration: const BoxDecoration(
                 color: Color.fromARGB(255, 155, 231, 157),
@@ -50,17 +52,19 @@ class _HomePageState extends State<HomePage> {
               //
               child: Column(
                 children: [
-                  const SizedBox(height: 32),
+                  // const SizedBox(height: 32),
                   Row(children: [
                     //
 
                     CupertinoButton(
                       onPressed: () {
-                        // Navigator.push(
-                        //   context,
-                        //   MaterialPageRoute(
-                        //       builder: (context) => const Profile_Page()),
-                        // );
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => Profile_Page(
+                                  userModel: widget.userModel,
+                                  firebaseUser: widget.firebaseUser)),
+                        );
                       },
                       child: const CircleAvatar(
                         child: Icon(Icons.person),
@@ -68,11 +72,12 @@ class _HomePageState extends State<HomePage> {
                     ),
 
                     //
-                    Spacer(),
+                    const Spacer(),
                     //
                     CupertinoButton(
-                      child: Icon(
+                      child: const Icon(
                         Icons.search,
+                        color: Colors.white,
                         size: 32,
                       ),
                       onPressed: () {
@@ -89,7 +94,7 @@ class _HomePageState extends State<HomePage> {
                 ],
               ),
             )
-            //
+//
           ],
         ),
       ),
