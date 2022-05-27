@@ -180,7 +180,8 @@ class _Login_PageState extends State<Login_Page> {
                   InkWell(
                     child: const Text("Sign Up!"),
                     onTap: () {
-                      Navigator.push(
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => SignUp_Page()),
                       );

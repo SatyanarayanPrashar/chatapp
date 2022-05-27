@@ -144,10 +144,6 @@ class _Profile_PageState extends State<Profile_Page> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: const Color.fromARGB(255, 155, 231, 157),
-      ),
       body: SafeArea(
         child: Container(
           height: size.height,
@@ -267,6 +263,32 @@ class _Profile_PageState extends State<Profile_Page> {
                   ],
                 ),
               ),
+//
+              const SizedBox(
+                height: 7.0,
+              ),
+//
+
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                  Navigator.push(context, MaterialPageRoute(builder: (context) {
+                    return HomePage(
+                        userModel: widget.userModel,
+                        firebaseUser: widget.firebaseUser);
+                  }));
+                },
+                //
+                child: const Icon(Icons.arrow_back_ios_new_outlined,
+                    color: Colors.white),
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  shadowColor: Colors.transparent,
+                  padding: const EdgeInsets.all(17),
+                  primary: Colors.white.withOpacity(0.4), // <-- Button color
+                  onPrimary: Colors.lightGreen, // <-- Splash color
+                ),
+              )
             ],
           ),
         ),

@@ -211,7 +211,11 @@ class _SignUp_PageState extends State<SignUp_Page> {
                   child: InkWell(
                     child: const Text("Already have an account?"),
                     onTap: () {
-                      Navigator.pop(context);
+                      Navigator.popUntil(context, (route) => route.isFirst);
+                      Navigator.pushReplacement(
+                          context,
+                          CupertinoPageRoute(
+                              builder: (context) => const Login_Page()));
                     },
                   ),
                 ),
