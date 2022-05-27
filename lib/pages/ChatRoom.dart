@@ -1,11 +1,8 @@
 import 'dart:developer';
-
 import 'package:chatapp/models/MessaggeModel.dart';
-import 'package:chatapp/widgets/NewChat.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-
 import '../main.dart';
 import '../models/ChatRoomModel.dart';
 import '../models/UserModel.dart';
@@ -68,10 +65,10 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Color.fromARGB(255, 155, 231, 157),
+        backgroundColor: const Color.fromARGB(255, 155, 231, 157),
         title: Row(children: [
           CircleAvatar(
-            backgroundColor: Color.fromARGB(255, 193, 251, 195),
+            backgroundColor: const Color.fromARGB(255, 193, 251, 195),
             backgroundImage:
                 NetworkImage(widget.targetUser.profilepic.toString()),
           ),
@@ -84,114 +81,113 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
         ]),
       ),
       body: SafeArea(
-        child: Container(
-          child: Column(
-            children: [
+        child: Column(
+          children: [
 //
-              Expanded(
-                  child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                child: StreamBuilder(
-                  stream: FirebaseFirestore.instance
-                      .collection("chatrooms")
-                      .doc(widget.chatroom.chatroomid)
-                      .collection("messages")
-                      .orderBy("createdon", descending: true)
-                      .snapshots(),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.active) {
-                      if (snapshot.hasData) {
-                        QuerySnapshot dataSnapshot =
-                            snapshot.data as QuerySnapshot;
+            Expanded(
+                child: Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10),
+//
+              child: StreamBuilder(
+                stream: FirebaseFirestore.instance
+                    .collection("chatrooms")
+                    .doc(widget.chatroom.chatroomid)
+                    .collection("messages")
+                    .orderBy("createdon", descending: true)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.active) {
+                    if (snapshot.hasData) {
+                      QuerySnapshot dataSnapshot =
+                          snapshot.data as QuerySnapshot;
 
-                        return ListView.builder(
-                          reverse: true,
-                          itemCount: dataSnapshot.docs.length,
-                          itemBuilder: (context, index) {
-                            MessageModel currentMessage = MessageModel.fromMap(
-                                dataSnapshot.docs[index].data()
-                                    as Map<String, dynamic>);
+                      return ListView.builder(
+                        reverse: true,
+                        itemCount: dataSnapshot.docs.length,
+                        itemBuilder: (context, index) {
+                          MessageModel currentMessage = MessageModel.fromMap(
+                              dataSnapshot.docs[index].data()
+                                  as Map<String, dynamic>);
 
-                            return Row(
-                              mainAxisAlignment: (currentMessage.sender ==
-                                      widget.userModel.uid)
-                                  ? MainAxisAlignment.end
-                                  : MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                    margin:
-                                        const EdgeInsets.symmetric(vertical: 2),
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 10, horizontal: 10),
-                                    decoration: BoxDecoration(
-                                      borderRadius: (currentMessage.sender ==
-                                              widget.userModel.uid)
-                                          ? const BorderRadius.only(
-                                              topLeft: Radius.circular(14),
-                                              topRight: Radius.circular(14),
-                                              bottomLeft: Radius.circular(14))
-                                          : const BorderRadius.only(
-                                              topLeft: Radius.circular(14),
-                                              topRight: Radius.circular(14),
-                                              bottomRight: Radius.circular(14)),
-                                      color: (currentMessage.sender ==
-                                              widget.userModel.uid)
-                                          ? Color.fromARGB(255, 209, 247, 210)
-                                          : Color.fromARGB(255, 155, 231, 157),
-                                    ),
-                                    child: Text(
-                                      currentMessage.text.toString(),
-                                      style: const TextStyle(fontSize: 18),
-                                    )),
-                              ],
-                            );
-                          },
-                        );
-                      } else if (snapshot.hasError) {
-                        return const Text(
-                            "An error Occured! Please check your internet connection.");
-                      } else {
-                        return Container(
-                            height: size.height * 0.3,
-                            width: size.width * 0.5,
-                            child: Column(
-                              children: [
-                                Image.asset("assets/images/newChat.png"),
-                                Text("Say Hello to your new friend"),
-                              ],
-                            ));
-                      }
-                    } else {
-                      return const Center(
-                        child: CircularProgressIndicator(),
+                          return Row(
+                            mainAxisAlignment:
+                                (currentMessage.sender == widget.userModel.uid)
+                                    ? MainAxisAlignment.end
+                                    : MainAxisAlignment.start,
+                            children: [
+                              Container(
+                                  margin:
+                                      const EdgeInsets.symmetric(vertical: 2),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 10, horizontal: 10),
+                                  decoration: BoxDecoration(
+                                    borderRadius: (currentMessage.sender ==
+                                            widget.userModel.uid)
+                                        ? const BorderRadius.only(
+                                            topLeft: Radius.circular(14),
+                                            topRight: Radius.circular(14),
+                                            bottomLeft: Radius.circular(14))
+                                        : const BorderRadius.only(
+                                            topLeft: Radius.circular(14),
+                                            topRight: Radius.circular(14),
+                                            bottomRight: Radius.circular(14)),
+                                    color: (currentMessage.sender ==
+                                            widget.userModel.uid)
+                                        ? Color.fromARGB(255, 209, 247, 210)
+                                        : Color.fromARGB(255, 155, 231, 157),
+                                  ),
+                                  child: Text(
+                                    currentMessage.text.toString(),
+                                    style: const TextStyle(fontSize: 18),
+                                  )),
+                            ],
+                          );
+                        },
                       );
+                    } else if (snapshot.hasError) {
+                      return const Text(
+                          "An error Occured! Please check your internet connection.");
+                    } else {
+                      return Container(
+                          height: size.height * 0.3,
+                          width: size.width * 0.5,
+                          child: Column(
+                            children: [
+                              Image.asset("assets/images/newChat.png"),
+                              Text("Say Hello to your new friend"),
+                            ],
+                          ));
                     }
-                  },
-                ),
-              )),
+                  } else {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  }
+                },
+              ),
+            )),
 //
-              Container(
-                color: Color.fromARGB(255, 209, 247, 210),
-                padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
-                child: Row(children: [
-                  Flexible(
-                      child: TextField(
-                    maxLines: null,
-                    controller: messageController,
-                    decoration: const InputDecoration(
-                      hintText: "Enter message",
-                      border: InputBorder.none,
-                    ),
-                  )),
-                  IconButton(
-                      onPressed: () {
-                        sendMessage();
-                      },
-                      icon: Icon(Icons.send))
-                ]),
-              )
-            ],
-          ),
+            Container(
+              color: Color.fromARGB(255, 209, 247, 210),
+              padding: EdgeInsets.symmetric(horizontal: 15, vertical: 5),
+              child: Row(children: [
+                Flexible(
+                    child: TextField(
+                  maxLines: null,
+                  controller: messageController,
+                  decoration: const InputDecoration(
+                    hintText: "Enter message",
+                    border: InputBorder.none,
+                  ),
+                )),
+                IconButton(
+                    onPressed: () {
+                      sendMessage();
+                    },
+                    icon: Icon(Icons.send))
+              ]),
+            )
+          ],
         ),
       ),
     );

@@ -117,7 +117,7 @@ class Cprofile_PageState extends State<Cprofile_Page> {
         .doc(widget.userModel.uid)
         .set(widget.userModel.toMap())
         .then((value) {
-      print("Data uploaded!");
+      //
       Navigator.popUntil(context, (route) => route.isFirst);
       Navigator.pushReplacement(
         context,
