@@ -59,6 +59,7 @@ class _HomePageState extends State<HomePage> {
                     );
                   },
                   child: CircleAvatar(
+                    backgroundColor: Color.fromARGB(255, 155, 231, 157),
                     backgroundImage:
                         NetworkImage(widget.userModel.profilepic.toString()),
                   ),
@@ -128,6 +129,8 @@ class _HomePageState extends State<HomePage> {
                                   );
                                 },
                                 leading: CircleAvatar(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 155, 231, 157),
                                   backgroundImage: NetworkImage(
                                       targetUser.profilepic.toString()),
                                 ),
