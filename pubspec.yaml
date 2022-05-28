@@ -42,11 +42,19 @@ dependencies:
   image_cropper: ^2.0.3
   uuid: ^3.0.6
   flutter_native_splash: ^2.1.6
+  flutter_launcher_icons: ^0.9.2
   
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+
+  flutter_launcher_icons: "^0.9.2"
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/app_logo.png"
 
 flutter_native_splash:
   color: "#ffffff" # white color
