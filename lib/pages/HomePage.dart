@@ -2,10 +2,8 @@ import 'package:chatapp/models/ChatRoomModel.dart';
 import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/models/fireBaseHealper.dart';
 import 'package:chatapp/pages/ChatRoom.dart';
-
 import 'package:chatapp/pages/SearchPage.dart';
 import 'package:chatapp/pages/loginPg.dart';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
