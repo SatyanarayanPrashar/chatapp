@@ -2,10 +2,10 @@ import 'package:chatapp/models/ChatRoomModel.dart';
 import 'package:chatapp/models/UserModel.dart';
 import 'package:chatapp/models/fireBaseHealper.dart';
 import 'package:chatapp/pages/ChatRoom.dart';
-// import 'package:chatapp/pages/ProfileView.dart';
+
 import 'package:chatapp/pages/SearchPage.dart';
 import 'package:chatapp/pages/loginPg.dart';
-import 'package:chatapp/widgets/NoChats.dart';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
@@ -160,7 +160,9 @@ class _HomePageState extends State<HomePage> {
                     child: Text(snapshot.error.toString()),
                   );
                 } else {
-                  return NoChats_HomePg();
+                  return Center(
+                      child: Text(
+                          "Search your friends using their email address."));
                 }
               } else {
                 return Center(

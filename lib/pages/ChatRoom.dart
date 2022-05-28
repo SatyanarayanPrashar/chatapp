@@ -149,15 +149,7 @@ class _ChatRoomPageState extends State<ChatRoomPage> {
                       return const Text(
                           "An error Occured! Please check your internet connection.");
                     } else {
-                      return Container(
-                          height: size.height * 0.3,
-                          width: size.width * 0.5,
-                          child: Column(
-                            children: [
-                              Image.asset("assets/images/newChat.png"),
-                              Text("Say Hello to your new friend"),
-                            ],
-                          ));
+                      return Center(child: Text("say hi to ur friend"));
                     }
                   } else {
                     return const Center(

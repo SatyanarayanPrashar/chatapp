@@ -93,7 +93,7 @@ class _Profile_PageState extends State<Profile_Page> {
   }
 
   void uploadData() async {
-    UIHelper.showLoadingDialog(context, "You are loaking good!");
+    UIHelper.showLoadingDialog(context, "You are looking good!");
 
     UploadTask uploadTask = FirebaseStorage.instance
         .ref("profilepictures")
