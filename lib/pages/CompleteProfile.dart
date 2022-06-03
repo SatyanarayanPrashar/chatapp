@@ -177,6 +177,7 @@ class Cprofile_PageState extends State<Cprofile_Page> {
                         showPhotoOptions();
                       },
                       child: CircleAvatar(
+                        backgroundColor: Color.fromARGB(255, 155, 231, 157),
                         radius: 60,
                         backgroundImage:
                             (imageFile != null) ? FileImage(imageFile!) : null,
