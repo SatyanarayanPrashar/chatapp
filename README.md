@@ -10,28 +10,44 @@ It uses Firebase Cloud Firestore as well as the Firebase authentication package 
 ## Demo
 
 [![XDoniF.md.jpg](https://iili.io/XDoniF.md.jpg)](https://freeimage.host/i/XDoniF)
+
 Login Page
 
+
 [![XDoaVt.md.jpg](https://iili.io/XDoaVt.md.jpg)](https://freeimage.host/i/XDoaVt)
+
 Sign Up Page
 
+
 [![XDo0fn.md.jpg](https://iili.io/XDo0fn.md.jpg)](https://freeimage.host/i/XDo0fn)
+
 Setting up profile
 
+
 [![XDoMJf.md.jpg](https://iili.io/XDoMJf.md.jpg)](https://freeimage.host/i/XDoMJf)
+
 Home Page
 
+
 [![XDoWOl.md.jpg](https://iili.io/XDoWOl.md.jpg)](https://freeimage.host/i/XDoWOl)
+
 Search Page
 
+
 [![XDoXb2.md.jpg](https://iili.io/XDoXb2.md.jpg)](https://freeimage.host/i/XDoXb2)
+
 Chat Room
 
+
 [![XDojxS.md.jpg](https://iili.io/XDojxS.md.jpg)](https://freeimage.host/i/XDojxS)
+
 Profile Edit
 
+
 [![XDoefe.md.jpg](https://iili.io/XDoefe.md.jpg)](https://freeimage.host/i/XDoefe)
+
 Image
+
 
 ## Dependencies
 
